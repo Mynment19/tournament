@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Button from "@mui/material/Button";
 
 const getSeconds = (time) => {
   const seconds = Number(time % 60);
@@ -10,7 +11,7 @@ const getSeconds = (time) => {
 };
 
 const Timer = () => {
-  const [time, setTime] = useState(1); // 남은 시간 (단위: 초)
+  const [time, setTime] = useState(600); // 남은 시간 (단위: 초)
   const [isPaused, setIsPaused] = useState(true); // 일시정지 여부
   const [smallBlind, setSmallBlind] = useState(1);
   const [bigBlind, setBigBlind] = useState(2);
@@ -25,15 +26,25 @@ const Timer = () => {
           if (prev > 0) {
             return prev - 1;
           } else {
-            // 시간이 0이 되었을 때 smallBlind와 bigBlind 변경
-            // switch 추가
-            setSmallBlind((prevSmallBlind) => prevSmallBlind + 1);
-            setBigBlind((prevBigBlind) => prevBigBlind + 1);
+            if (level < 5) {
+              setSmallBlind(smallBlind + 1);
+              setBigBlind(bigBlind + 2);
+            } else if (level < 6) {
+              setSmallBlind(smallBlind + 5);
+              setBigBlind(bigBlind + 10);
+            } else if (level < 10) {
+              setSmallBlind(smallBlind + 10);
+              setBigBlind(bigBlind + 20);
+            } else if (level < 14) {
+              setSmallBlind(smallBlind + 50);
+              setBigBlind(bigBlind + 100);
+            }
+
             // 시간 초기화 및 타이머 정지
-            setTime(480);
+            setTime(600);
             setIsPaused(true);
             clearInterval(timer);
-            return 0;
+            setLevel(level + 1);
           }
         });
       }, 1000);
@@ -41,13 +52,19 @@ const Timer = () => {
     return () => clearInterval(timer);
   }, [time, isPaused]);
 
+  useEffect(() => {
+    if (level !== 1) {
+      alert("Blind Up");
+    }
+  }, [level]);
+
   const handlePauseResume = () => {
     setIsPaused((prev) => !prev); // 일시정지 상태
   };
 
   return (
     <div>
-      <h1>남은 시간</h1>
+      <h1>Tournament</h1>
       <div>
         <span>
           {parseInt(time / 60)} : {getSeconds(time)}
@@ -64,7 +81,9 @@ const Timer = () => {
       <div>
         <span>Level : {level}</span>
       </div>
-      <button onClick={handlePauseResume}>{isPaused ? "시작" : "정지"}</button>
+      <Button variant="outlined" onClick={handlePauseResume}>
+        {isPaused ? "Start" : "Pause"}
+      </Button>
     </div>
   );
 };
