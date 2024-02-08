@@ -11,7 +11,7 @@ const getSeconds = (time) => {
 };
 
 const Timer = () => {
-  const [time, setTime] = useState(5); // 남은 시간 (단위: 초)
+  const [time, setTime] = useState(600); // 남은 시간 (단위: 초)
   const [isPaused, setIsPaused] = useState(true); // 일시정지 여부
   const [smallBlind, setSmallBlind] = useState(1);
   const [bigBlind, setBigBlind] = useState(2);
@@ -40,7 +40,7 @@ const Timer = () => {
             }
 
             // 시간 초기화 및 타이머 정지
-            setTime(5);
+            setTime(600);
             setIsPaused(true);
             clearInterval(timer);
             setLevel(level + 1);
@@ -55,11 +55,11 @@ const Timer = () => {
   // level 14 일때 Last Blind Up
   useEffect(() => {
     if (level === 6 || level === 11) {
-      alert("**********Break Time**********");
+      alert("Break Time");
     } else if (level === 14) {
-      alert("**********Last Blind Up**********");
+      alert("Last Blind Up");
     } else if (level !== 1) {
-      alert("**********Next Hand Blind Up**********");
+      alert("Next Hand Blind Up");
     }
   }, [level]);
 
