@@ -54,12 +54,12 @@ const Timer = () => {
   // level 6, 12 일때 Break Time
   // level 14 일때 Last Blind Up
   useEffect(() => {
-    if (level == 6 || level == 11) {
-      alert("Break Time");
-    } else if (level == 14) {
-      alert("Last Blind Up");
+    if (level === 6 || level === 11) {
+      alert("**********Break Time**********");
+    } else if (level === 14) {
+      alert("**********Last Blind Up**********");
     } else if (level !== 1) {
-      alert("Blind Up");
+      alert("**********Next Hand Blind Up**********");
     }
   }, [level]);
 
@@ -83,7 +83,13 @@ const Timer = () => {
       <div className="level">
         <span>Level : {level}</span>
       </div>
-      <Button variant="outlined" onClick={handlePauseResume}>
+      <Button
+        variant="outlined"
+        onClick={handlePauseResume}
+        onKeyDown={(e) => {
+          console.log(e);
+        }}
+      >
         {isPaused ? "Start" : "Pause"}
       </Button>
     </div>
