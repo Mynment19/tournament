@@ -11,11 +11,10 @@ const getSeconds = (time) => {
 };
 
 const Timer = () => {
-  const [time, setTime] = useState(600); // 남은 시간 (단위: 초)
+  const [time, setTime] = useState(5); // 남은 시간 (단위: 초)
   const [isPaused, setIsPaused] = useState(true); // 일시정지 여부
   const [smallBlind, setSmallBlind] = useState(1);
   const [bigBlind, setBigBlind] = useState(2);
-  const [anti, setAnti] = useState(0);
   const [level, setLevel] = useState(1);
 
   useEffect(() => {
@@ -41,7 +40,7 @@ const Timer = () => {
             }
 
             // 시간 초기화 및 타이머 정지
-            setTime(600);
+            setTime(5);
             setIsPaused(true);
             clearInterval(timer);
             setLevel(level + 1);
@@ -52,8 +51,14 @@ const Timer = () => {
     return () => clearInterval(timer);
   }, [time, isPaused]);
 
+  // level 6, 12 일때 Break Time
+  // level 14 일때 Last Blind Up
   useEffect(() => {
-    if (level !== 1) {
+    if (level == 6 || level == 11) {
+      alert("Break Time");
+    } else if (level == 14) {
+      alert("Last Blind Up");
+    } else if (level !== 1) {
       alert("Blind Up");
     }
   }, [level]);
@@ -64,21 +69,18 @@ const Timer = () => {
 
   return (
     <div>
-      <h1>Tournament</h1>
-      <div>
+      <h1 className="title">Tournament</h1>
+      <div className="timer">
         <span>
           {parseInt(time / 60)} : {getSeconds(time)}
         </span>
       </div>
-      <div>
+      <div className="blind">
         <span>
           SB : {smallBlind} / BB : {bigBlind}
         </span>
       </div>
-      <div>
-        <span>Anti : {anti}</span>
-      </div>
-      <div>
+      <div className="level">
         <span>Level : {level}</span>
       </div>
       <Button variant="outlined" onClick={handlePauseResume}>
